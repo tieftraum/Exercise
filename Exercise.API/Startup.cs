@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Exercise.Infrastructure.Extensions;
 using Exercise.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,8 @@ namespace Exercise.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.InjectDataContextServices(Configuration);
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Exercise.API", Version = "v1"});

@@ -10,6 +10,7 @@ namespace Exercise.Infrastructure.Extensions
         public static IServiceCollection InjectRepositoryServices(this IServiceCollection services)
         {
             services.AddScoped<IPhoneRepository, PhoneRepository>();
+            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }

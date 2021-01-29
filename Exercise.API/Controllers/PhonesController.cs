@@ -41,7 +41,7 @@ namespace Exercise.API.Controllers
 
         // GET api/phones/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReadPhone>> GetPhone([FromQuery] int id)
+        public async Task<ActionResult<ReadPhone>> GetPhone(int id)
         {
             var phone = await _phoneRepository.GetPhoneByIdAsync(id);
             if (phone is null)
@@ -71,7 +71,7 @@ namespace Exercise.API.Controllers
 
             if (await _unitOfWork.SaveChangesAsync())
             {
-                return CreatedAtAction(nameof(GetPhone), new {modeName = phoneToCreate.ModelName}, phoneToRead);
+                return CreatedAtAction(nameof(GetPhone), new {phoneToCreate.Id}, phoneToRead);
             }
             return BadRequest("phone creating handling error text!");
         }

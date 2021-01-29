@@ -28,10 +28,10 @@ namespace Exercise.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(DefaultMappingProfile).Assembly);
             services.AddDataContextServices(Configuration);
             services.InjectRepositoryServices();
             services.AddSwaggerServices(Configuration);
-            services.AddAutoMapper(typeof(DefaultMappingProfile).Assembly);
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

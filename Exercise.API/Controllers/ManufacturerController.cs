@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Exercise.API.Controllers
 {
-    [Route("api/manufacturers")]
+    [Route("api/manufacturer")]
     [ApiController]
     public class ManufacturerController : ControllerBase
     {
@@ -41,7 +41,7 @@ namespace Exercise.API.Controllers
 
         // GET api/manufacturer/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReadManufacturer>> GetManufacturer([FromQuery] int id)
+        public async Task<ActionResult<ReadManufacturer>> GetManufacturer(int id)
         {
             var manufacturer = await _manufacturerRepository.GetManufacturerByIdAsync(id);
             if (manufacturer is null)
@@ -71,7 +71,8 @@ namespace Exercise.API.Controllers
 
             if (await _unitOfWork.SaveChangesAsync())
             {
-                return CreatedAtAction(nameof(GetManufacturer), new {modeName = manufacturerToCreate.Name}, manufacturerToRead);
+                return CreatedAtAction(nameof(GetManufacturer), new {id = manufacturerToCreate.Id},
+                    manufacturerToRead);
             }
             return BadRequest("manufacturer creating handling error text!");
         }

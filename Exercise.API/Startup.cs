@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Exercise.Infrastructure.Extensions;
+using Exercise.Infrastructure.MappingProfiles;
 using Exercise.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +29,9 @@ namespace Exercise.API
         {
             services.AddControllers();
             services.AddDataContextServices(Configuration);
+            services.InjectRepositoryServices();
             services.AddSwaggerServices(Configuration);
+            services.AddAutoMapper(typeof(DefaultMappingProfile).Assembly);
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -7,6 +7,5 @@ namespace Exercise.Domain.Records
         public int Id { get; init; }
         public string Name { get; init; }
         public ICollection<Phone> Phones { get; init; }
-        
     };
 }

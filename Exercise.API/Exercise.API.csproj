@@ -4,12 +4,6 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
-
-
-    <ItemGroup>
-      <Folder Include="Controllers" />
-    </ItemGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\Exercise.Infrastructure\Exercise.Infrastructure.csproj" />
     </ItemGroup>

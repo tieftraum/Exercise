@@ -11,7 +11,7 @@ namespace Exercise.Database.EntityConfigurations
             builder.Property(x => x.Created).IsRequired();
             builder.Property(x => x.Color).HasMaxLength(32).IsRequired();
             builder.Property(x => x.ModelName).HasMaxLength(64).IsRequired();
-            builder.Property(x => x.Price).IsRequired();
+            builder.Property(x => x.Price).HasColumnType("money").IsRequired();
 
             builder.HasOne(p => p.Manufacturer)
                    .WithMany(m => m.Phones)

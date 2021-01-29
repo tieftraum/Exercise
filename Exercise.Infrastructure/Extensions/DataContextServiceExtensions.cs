@@ -7,7 +7,7 @@ namespace Exercise.Infrastructure.Extensions
 {
     public static class DataContextServiceExtensions
     {
-        public static IServiceCollection InjectDataContextServices(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddDataContextServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<DataContext>(options =>
             {

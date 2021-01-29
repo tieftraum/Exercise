@@ -26,12 +26,8 @@ namespace Exercise.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.InjectDataContextServices(Configuration);
-            
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Exercise.API", Version = "v1"});
-            });
+            services.AddDataContextServices(Configuration);
+            services.AddSwaggerServices(Configuration);
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

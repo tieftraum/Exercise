@@ -6,7 +6,7 @@ namespace Exercise.Infrastructure.Extensions
 {
     public static class SwaggerServiceExtensions
     {
-        public static IServiceCollection InjectSwaggerServices(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddSwaggerServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddSwaggerGen(c =>
             {

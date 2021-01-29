@@ -4,7 +4,6 @@ namespace Exercise.Domain.Records
 {
     public record Phone
     {
-
         public int Id { get;init; }
         public DateTime Created { get;init; }
         public string ModelName { get;init; }

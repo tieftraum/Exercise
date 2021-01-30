@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Exercise.Domain.CRUD.Manufacturer;
 using Exercise.Domain.CRUD.Phone;
+using Exercise.Domain.CRUD.User;
+using Exercise.Domain.Identity;
 using Exercise.Domain.Records;
 
 namespace Exercise.Infrastructure.MappingProfiles
@@ -16,6 +18,9 @@ namespace Exercise.Infrastructure.MappingProfiles
             CreateMap<ReadManufacturer, Manufacturer>().ReverseMap();
             CreateMap<CreateManufacturer, Manufacturer>().ReverseMap();
             CreateMap<UpdateManufacturer, Manufacturer>().ReverseMap();
+            
+            CreateMap<ReadUser,AppUser>().ReverseMap();
+            CreateMap<CreateUser, AppUser>().ReverseMap();
         }
     }
 }

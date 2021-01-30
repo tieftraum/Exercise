@@ -5,12 +5,14 @@ using AutoMapper;
 using Exercise.Domain.CRUD.Phone;
 using Exercise.Domain.Interfaces;
 using Exercise.Domain.Records;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exercise.API.Controllers
 {
     [Route("api/phones")]
     [ApiController]
+    [Authorize]
     public class PhonesController : ControllerBase
     {
         private readonly IPhoneRepository _phoneRepository;
@@ -26,16 +28,13 @@ namespace Exercise.API.Controllers
         
         // GET: api/phones
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ReadPhone>>> GetPhones()
         {
             var phones = await _phoneRepository.GetAllPhonesAsync();
-            if (!phones.Any())
-            {
-                return NotFound("phone not found handling error text!");
-            }
+            if (!phones.Any()) return NotFound("phone not found handling error text!");
 
             var phonesToRead = _mapper.Map<IEnumerable<ReadPhone>>(phones);
-            
             return Ok(phonesToRead);
         }
 
@@ -44,10 +43,7 @@ namespace Exercise.API.Controllers
         public async Task<ActionResult<ReadPhone>> GetPhone(int id)
         {
             var phone = await _phoneRepository.GetPhoneByIdAsync(id);
-            if (phone is null)
-            {
-                return NotFound("phone not found handling error text!");
-            }
+            if (phone is null) return NotFound("phone not found handling error text!");
 
             var phoneToRead = _mapper.Map<ReadPhone>(phone);
             return phoneToRead; // encapsulate to OK(); still the same
@@ -57,23 +53,15 @@ namespace Exercise.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ReadPhone>> CreatePhone([FromBody] CreatePhone createPhone)
         {
-            if (createPhone is null)
-            {
-                return BadRequest("phone is null handling error text!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("phone validation handling error text!");
-            }
+            if (createPhone is null) return BadRequest("phone is null handling error text!");
+            if (!ModelState.IsValid) return BadRequest("phone validation handling error text!");
+
             var phoneToCreate = _mapper.Map<Phone>(createPhone);
             await _phoneRepository.AddPhoneAsync(phoneToCreate);
-            var phoneToRead = _mapper.Map<ReadPhone>(phoneToCreate);
 
-            if (await _unitOfWork.SaveChangesAsync())
-            {
-                return CreatedAtAction(nameof(GetPhone), new {phoneToCreate.Id}, phoneToRead);
-            }
-            return BadRequest("phone creating handling error text!");
+            if (!await _unitOfWork.SaveChangesAsync()) return BadRequest("phone creating handling error text!");
+            var phoneToRead = _mapper.Map<ReadPhone>(phoneToCreate);
+            return CreatedAtAction(nameof(GetPhone), new {phoneToCreate.Id}, phoneToRead);
         }
         
         // PUT api/phones/{id}
@@ -81,18 +69,11 @@ namespace Exercise.API.Controllers
         public async Task<ActionResult> UpdatePhone(int id, UpdatePhone updatePhone)
         {
             var phone = await _phoneRepository.GetPhoneByIdAsync(id);
-            if (phone is null)
-            {
-                return NotFound("phone not found handling error text!");
-            }
+            if (phone is null) return NotFound("phone not found handling error text!");
             _mapper.Map(updatePhone, phone);
             _phoneRepository.UpdatePhone(phone);
 
-            if (await _unitOfWork.SaveChangesAsync())
-            {
-                return NoContent();
-            }
-            
+            if (await _unitOfWork.SaveChangesAsync()) return NoContent();
             return BadRequest("phone could not be updated handling error text!");
         }
         
@@ -101,17 +82,11 @@ namespace Exercise.API.Controllers
         public async Task<ActionResult> DeletePhoto(int id)
         {
             var phone = await _phoneRepository.GetPhoneByIdAsync(id);
-            if (phone is null)
-            {
-                return NotFound("phone not found handling error text!");
-            }
+            if (phone is null) return NotFound("phone not found handling error text!");
             
             _phoneRepository.DeletePhone(phone);
-            if (await _unitOfWork.SaveChangesAsync())
-            {
-                return Ok();
-            }
-            
+            if (await _unitOfWork.SaveChangesAsync()) return Ok();
+
             return BadRequest("photo removal error handling text!");
         }
     }
